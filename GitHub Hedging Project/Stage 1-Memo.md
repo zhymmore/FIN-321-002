@@ -1,7 +1,7 @@
 # EUR/USD FX Receivables Hedging Strategy - U.S. Pharmaceutical Exporter
 
 **Created by:** Zhymmore Paguirigan  
-**Updated by:** Zhymmore Paguirigan
+**Updated by:** Zhymmore Paguirigan  
 **Date Created:** 2026-03-29  
 **Date Updated:** 2026-03-29  
 **Version:** 1.0  
@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-Our pharmaceutical division is exposed to a €7,272,727 receivable due in one year from a major European client, representing approximately $8.35 million in current USD proceeds. EUR/USD volatility, currently trading at 1.1508, poses material downside risk to our cash forecasts and profit margins. A 5% depreciation would reduce proceeds by $418,000. This memo outlines three hedging families (forward contracts, put options, call options) and recommends advancing to Stage 2 analytical modeling to evaluate cost-benefit trade-offs and determine the optimal hedge ratio and structure.
+Our pharmaceutical division is exposed to a €7,272,727 receivable due in one year from a major European client, representing approximately $8.35 million in current USD proceeds. EUR/USD volatility, currently trading at 1.1508, poses material downside risk to our cash forecasts and profit margins. A 5% depreciation would reduce proceeds by $418,000. This memo outlines three hedging families (forward contracts, put options, call options) and recommends advancing through Stages 2-4 to build a working model, document specifications, and deliver a data-driven recommendation to the CFO.
 
 ---
 
@@ -64,17 +64,54 @@ Exchange rate movements directly impact our reported earnings and operating cash
 - Option premiums provided (0.021-0.026) are illustrative; actual quotes depend on volatility, credit, and institutional relationships.
 - This memo assumes the full receivable is hedged; a partial hedge analysis will be explored in Stage 2.
 
-### Next Steps (Stage 2 - Excel Model Build)
+### Project Timeline: Stages 2-4
 
-1. **Validate market parameters** (spot, forwards, rates) as of Stage 2 start date.
-2. **Build a comparative model** that shows:
-   - Unhedged outcome at multiple EUR/USD rates (1.00, 1.05, 1.10, 1.15, 1.20).
-   - Three hedge outcomes under the same scenarios.
-   - Net cost (premium, funding) and effective USD proceeds for each strategy.
-3. **Sensitivity analysis:** How does each hedge perform if our receivable is delayed or reduced?
-4. **Recommendation framework:** Identify the hedge that best aligns with our risk tolerance and financial targets.
+#### **Stage 2: Excel Model Build (Responsible: Treasury FX Analyst)**
+1. Validate market parameters (spot, forwards, interest rates) as of Stage 2 start date using Bloomberg/ECB data.
+2. Build a comparative Excel prototype (`.xlsx`) that computes outcomes for all three hedge strategies across multiple FX scenarios.
+3. Create sensitivity tables showing:
+   - Unhedged proceeds at rates: 1.00, 1.05, 1.10, 1.15, 1.20 EURUSD.
+   - Hedged proceeds for forward, put, and collar strategies under identical scenarios.
+   - Net cost (premium, funding, or income) for each hedge.
+   - Effective floor and upside cap for each strategy.
+4. Identify break-even analysis: at what exchange rate does each hedging strategy outperform others?
+5. Model extensions: partial hedge ratios (50%, 75%, 100%), delayed payment scenarios, and margin impact analysis.
 
-**Responsible party:** Treasury Team (FX analyst) with support from Corporate Finance.
+**Deliverable:** Working `.xlsx` model committed to `docs/templates/excel/`.
+
+#### **Stage 3: Technical Specification (Responsible: FX Analyst with Documentation Lead)**
+1. Document the Stage 2 model with complete technical specifications including:
+   - Input parameters (spot, strike, forward, interest rates, premium, notional).
+   - Formulas and calculations for each hedge payoff.
+   - Assumptions and limitations clearly stated.
+   - User guide for modifying scenarios or hedge ratios.
+2. Design an improved version of the model with enhanced features:
+   - Separate input sheet from calculation sheets for easier maintenance.
+   - Data validation and error checking.
+   - Dynamic charts and scenario dashboards.
+   - Integration with real-time Bloomberg/ECB data feeds (if feasible).
+3. Write the spec with enough precision and detail that an AI system or junior analyst could reconstruct the improved model from scratch.
+
+**Deliverable:** Technical specification Markdown file (`.md`) committed to `docs/` or repository root.
+
+#### **Stage 4: Final Analysis, Prompt Engineering & Recommendation (Responsible: Treasury Manager with CFO liaison)**
+1. Analyze Stage 2 model results:
+   - Compare all three hedge strategies under base case, bullish EUR, and bearish EUR scenarios.
+   - Quantify the cost/benefit trade-off of each approach.
+   - Assess alignment with firm's risk tolerance, debt covenants, and strategic objectives.
+2. Select recommended hedge strategy based on:
+   - Downside protection requirements.
+   - Expected EUR volatility and market outlook.
+   - Cost-benefit alignment with corporate financial targets.
+   - Operational and counterparty considerations.
+3. Write a structured AI prompt (using insights from Stage 2 model and Stage 3 spec) that captures the hedging decision framework and can guide future similar analyses.
+4. Prepare final executive memo/presentation to CFO that includes:
+   - Summary of model findings.
+   - Recommended hedge strategy with justification.
+   - Implementation roadmap (execution timeline, counterparties, documentation).
+   - Risk disclosures and contingency plans.
+
+**Deliverable:** Final analysis Markdown file and CFO-ready presentation committed to repository.
 
 ---
 
