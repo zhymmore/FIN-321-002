@@ -1,7 +1,7 @@
 # FX Hedging Strategy: EUR Receivables Exposure – U.S. Pharmaceutical Exporter
 
-**Created by:** [Your Name]  
-**Updated by:** [Your Name]  
+**Created by:** [Zhymmore Paguirigan]  
+**Updated by:** [Zhymmore Paguirigan]  
 **Date Created:** 2026-03-29  
 **Date Updated:** 2026-03-29  
 **Version:** 1.0  
