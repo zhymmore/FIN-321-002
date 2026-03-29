@@ -1,7 +1,7 @@
 # EUR/USD FX Receivables Hedging Strategy - U.S. Pharmaceutical Exporter
 
-**Created by:** zhymmore  
-**Updated by:** zhymmore  
+**Created by:** Zhymmore Paguirigan  
+**Updated by:** Zhymmore Paguirigan
 **Date Created:** 2026-03-29  
 **Date Updated:** 2026-03-29  
 **Version:** 1.0  
