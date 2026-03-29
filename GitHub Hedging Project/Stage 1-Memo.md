@@ -66,52 +66,11 @@ Exchange rate movements directly impact our reported earnings and operating cash
 
 ### Project Timeline: Stages 2-4
 
-#### **Stage 2: Excel Model Build (Responsible: Treasury FX Analyst)**
-1. Validate market parameters (spot, forwards, interest rates) as of Stage 2 start date using Bloomberg/ECB data.
-2. Build a comparative Excel prototype (`.xlsx`) that computes outcomes for all three hedge strategies across multiple FX scenarios.
-3. Create sensitivity tables showing:
-   - Unhedged proceeds at rates: 1.00, 1.05, 1.10, 1.15, 1.20 EURUSD.
-   - Hedged proceeds for forward, put, and collar strategies under identical scenarios.
-   - Net cost (premium, funding, or income) for each hedge.
-   - Effective floor and upside cap for each strategy.
-4. Identify break-even analysis: at what exchange rate does each hedging strategy outperform others?
-5. Model extensions: partial hedge ratios (50%, 75%, 100%), delayed payment scenarios, and margin impact analysis.
+**Stage 2 (Excel Model):** Build comparative model across three strategies at multiple FX rates (1.00-1.20), calculate break-even points and net costs.
 
-**Deliverable:** Working `.xlsx` model committed to `docs/templates/excel/`.
+**Stage 3 (Technical Spec):** Document model design and formulas with precision sufficient for AI reconstruction; propose improved version with dashboards and data feeds.
 
-#### **Stage 3: Technical Specification (Responsible: FX Analyst with Documentation Lead)**
-1. Document the Stage 2 model with complete technical specifications including:
-   - Input parameters (spot, strike, forward, interest rates, premium, notional).
-   - Formulas and calculations for each hedge payoff.
-   - Assumptions and limitations clearly stated.
-   - User guide for modifying scenarios or hedge ratios.
-2. Design an improved version of the model with enhanced features:
-   - Separate input sheet from calculation sheets for easier maintenance.
-   - Data validation and error checking.
-   - Dynamic charts and scenario dashboards.
-   - Integration with real-time Bloomberg/ECB data feeds (if feasible).
-3. Write the spec with enough precision and detail that an AI system or junior analyst could reconstruct the improved model from scratch.
-
-**Deliverable:** Technical specification Markdown file (`.md`) committed to `docs/` or repository root.
-
-#### **Stage 4: Final Analysis, Prompt Engineering & Recommendation (Responsible: Treasury Manager with CFO liaison)**
-1. Analyze Stage 2 model results:
-   - Compare all three hedge strategies under base case, bullish EUR, and bearish EUR scenarios.
-   - Quantify the cost/benefit trade-off of each approach.
-   - Assess alignment with firm's risk tolerance, debt covenants, and strategic objectives.
-2. Select recommended hedge strategy based on:
-   - Downside protection requirements.
-   - Expected EUR volatility and market outlook.
-   - Cost-benefit alignment with corporate financial targets.
-   - Operational and counterparty considerations.
-3. Write a structured AI prompt (using insights from Stage 2 model and Stage 3 spec) that captures the hedging decision framework and can guide future similar analyses.
-4. Prepare final executive memo/presentation to CFO that includes:
-   - Summary of model findings.
-   - Recommended hedge strategy with justification.
-   - Implementation roadmap (execution timeline, counterparties, documentation).
-   - Risk disclosures and contingency plans.
-
-**Deliverable:** Final analysis Markdown file and CFO-ready presentation committed to repository.
+**Stage 4 (Final Recommendation):** Analyze results, recommend optimal hedge strategy, write structured AI prompt, and present implementation roadmap to CFO.
 
 ---
 
