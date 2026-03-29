@@ -50,4 +50,12 @@ We will employ a four-stage analytical framework:
 **Stage 3 – Technical Specification:** Document model design, assumptions, and data sources; propose an improved, production-grade version suitable for reuse across future hedging decisions.
 
 **Stage 4 – Final Analysis & Recommendation:** Interpret model results, present a clear recommendation aligned with company risk appetite, and deliver an executive-ready summary
-
+
+---
+
+## References
+
+Stauffer, A. (2026). FIN-321 Multi-Stage Project – FX Exposure and Hedging Strategies. Course materials.  
+Stauffer, A. (2026). Stage 1 – Executive Memo assignment and Scenario 2 (U.S. Pharmaceutical Exporter). *FIN-321-International-Finance-And-Securities/project-fx-hedging/scenarios.md*.  
+Scenario 2 data: €7.3M receivable in 1 year; forward rate 1.0890 USD/EUR; put option premium $0.021/EUR; call option premium $0.026/EUR; maturity 1 year.
+
