@@ -1,1 +1,2 @@
 
+Create a excel template using the directions from courses/FIN-321-International-Finance-And-Securities/project-fx-hedging/stage2-excel-build-assignment.md while using the scenario 2 from FIN-321-International-Finance-And-Securities/project-fx-hedging/scenarios.md and taking into consideration FIN-321-International-Finance-And-Securities/project-fx-hedging/README.md. I provided example template you can use.
