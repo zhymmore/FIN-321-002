@@ -16,7 +16,7 @@
 
 ## 1. Problem Statement
 
-A U.S. pharmaceutical exporter expects to receive **€7,272,727** from a European pharma client in **12 months**, creating direct exposure to EUR/USD exchange rate fluctuations. If the euro depreciates against the dollar between now and settlement, the USD-equivalent proceeds will fall below the anticipated target of approximately $8.35M (based on the spot rate at inception of 1.1508). This specification defines the analytical framework used to quantify, compare, and evaluate four hedging alternatives — a forward contract, a money market hedge, a EUR put option, and a zero-cost collar — to protect the USD value of that receivable while documenting trade-offs between certainty, cost, and upside participation for treasury decision-making.
+A U.S. pharmaceutical exporter holds a confirmed **EUR-denominated receivable of €7,272,727** from a European pharma client, expected to settle on **March 29, 2027** — 12 months from the model inception date of March 29, 2026. The exposure is long EUR/short USD: if the euro depreciates against the dollar before settlement, the USD-equivalent proceeds will fall below the anticipated target of approximately $8.35M (based on the spot rate at inception of 1.1508), directly reducing reported revenue and potentially missing USD cash flow targets. This specification defines the analytical framework used to quantify, compare, and evaluate four hedging alternatives — a forward contract, a money market hedge, a EUR put option, and a net-credit collar — to protect the USD value of that receivable while documenting trade-offs between certainty, cost, and upside participation for treasury decision-making.
 
 ---
 
@@ -30,8 +30,8 @@ All variables below are drawn directly from the Stage 2 Excel model. Named range
 | `S0_in`       | EUR/USD spot rate at inception        | USD per EUR | 1.1508    | FT Markets, 2026-03-29                              |
 | `F0_in`       | EUR/USD 1-year forward rate           | USD per EUR | 1.0890    | FT Markets, 2026-03-29                              |
 | `R_USD`       | USD 1-year interest rate              | Annual %    | 3.75%     | Federal Reserve H.15; mid-range of 3.50–3.75%      |
-| `R_EUR`       | EUR 1-year interest rate              | Annual %    | 2.15%     | ECB main refinancing rate                           |
-| `T`           | Time to settlement                    | Years       | 1.0       | Derived from receivable terms                       |
+| `R_FC`        | EUR 1-year interest rate              | Annual %    | 2.15%     | ECB main refinancing rate                           |
+| `T_DAYS`      | Days to settlement                    | Days        | 365       | Derived from receivable terms                       |
 | `K_PUT`       | EUR put option strike price           | USD per EUR | 1.1508    | At-the-money (K = S₀); Stage 1 assumption          |
 | `PREM_PUT`    | Put premium per unit of EUR           | USD per EUR | 0.021     | Illustrative; Stage 1 scenario                      |
 | `K_CALL`      | EUR call option strike price (collar) | USD per EUR | 1.1700    | Stage 1 approximation; to be market-validated       |
@@ -43,8 +43,8 @@ All variables below are drawn directly from the Stage 2 Excel model. Named range
 
 The following conventions were applied throughout the Stage 2 model. Any future rebuild must respect these assumptions to reproduce the results.
 
-- All interest rates are quoted on a simple annual basis (Act/365 assumed); `T = 1.0` year exactly — no day-count adjustment applied.
-- The forward rate `F0_in = 1.0890` is taken as given from the market source. It deviates significantly from the covered interest rate parity (IRP)-implied rate of ≈1.1688 (computed as S₀ × (1 + R_USD) ÷ (1 + R_EUR)). This ~6.8% gap is documented and treated as a known limitation attributable to market risk premium or data-source timing differences.
+- All interest rates are quoted on a simple annual basis (Act/365 assumed). `T_DAYS = 365`, and the time fraction used in all calculations is `T = T_DAYS / 365 = 1.0` — no further day-count adjustment applied.
+- The forward rate `F0_in = 1.0890` is taken as given from the market source. It deviates significantly from the covered interest rate parity (IRP)-implied rate of ≈1.1688 (computed as S₀ × (1 + R_USD) ÷ (1 + R_FC)). This ~6.8% gap is documented and treated as a known limitation attributable to market risk premium or data-source timing differences.
 - Bid-ask spreads and transaction costs are excluded from all calculations.
 - Counterparty credit risk on the forward contract is acknowledged but not quantified. ISDA/CSA netting agreements are assumed to apply in practice.
 - Option premiums (`PREM_PUT`, `PREM_CALL`) are paid upfront in USD and carried forward to maturity using `R_USD`.
@@ -64,9 +64,9 @@ The model executes the following logical sequence for each hedge type. Formulas 
 2. Result is deterministic: USD proceeds are fixed regardless of the spot rate at maturity (`S_T`). No premium is paid; no upside participation exists.
 
 **Money Market Hedge**
-1. Compute the present value of the EUR receivable by dividing `FC_AMT` by `(1 + R_EUR)` — this is the EUR borrowing amount today.
+1. Compute the present value of the EUR receivable by dividing `FC_AMT` by `(1 + R_FC × T_DAYS / 365)` — this is the EUR borrowing amount today.
 2. Convert that EUR amount to USD at `S0_in` (sell EUR spot) to obtain USD proceeds today.
-3. Invest those USD proceeds for one year at `R_USD`; the resulting balance at maturity is the locked-in USD outcome.
+3. Invest those USD proceeds for `T_DAYS / 365` years at `R_USD`; the resulting balance at maturity is the locked-in USD outcome.
 4. Run a parity check by subtracting the forward hedge proceeds from the money market proceeds. A non-zero result (≈$580,547 in this model) confirms the IRP deviation documented in Section 3.
 
 **Put Option Hedge**
@@ -75,7 +75,7 @@ The model executes the following logical sequence for each hedge type. Formulas 
 3. Compute the floor (minimum guaranteed USD proceeds): multiply `FC_AMT` by `K_PUT`, then subtract the future-value premium.
 4. For scenarios where `S_T > K_PUT`, the put expires worthless; net proceeds equal `S_T × FC_AMT` minus the future-value premium, preserving full upside.
 
-**Collar Hedge (Buy Put + Sell Call)**
+**Collar Hedge — Net-Credit Structure (Buy Put + Sell Call)**
 1. Compute put premium paid: `FC_AMT × PREM_PUT`.
 2. Compute call premium received: `FC_AMT × PREM_CALL`.
 3. Compute net premium: put cost minus call income. Here, `PREM_CALL > PREM_PUT`, so the collar generates net income of $0.005 per EUR (≈$36,364 total).
@@ -124,8 +124,8 @@ The model produces the following specific results, tables, and charts.
 **Naming, layout, and formula improvements:**
 - Rename `S0` to `S0_in` consistently across all sections; naming is currently inconsistent across the worksheet.
 - Add a dedicated `Inputs` sheet separate from calculation sheets to enforce clean separation of concerns and make the model more auditable.
-- Add `T_DAYS` as an explicit input (e.g., 365) and derive `T = T_DAYS / 365` rather than hardcoding `T = 1`.
-- Apply Excel named ranges to all key cells so the model is fully navigable without reading cell addresses.
+- Replace the hardcoded `T = 1` with `T_DAYS = 365` as an explicit input, deriving `T = T_DAYS / 365` throughout all hedge calculations.
+- Replace any remaining `R_EUR` references with the standardized `R_FC` named range across all sheets and formulas.
 
 **Additional scenarios worth including:**
 - Worst-case stress testing: S_T at −10% and −15% of S₀, beyond the current ±5% range.
@@ -136,9 +136,9 @@ The model produces the following specific results, tables, and charts.
 
 ## 7. Sensitivity Plan
 
-The sensitivity analysis varies the EUR/USD spot rate at maturity (`S_T`) from **0.95 × S₀** to **1.05 × S₀** in increments of **1% of S₀** (i.e., 0.011508 per step), producing 11 scenarios. The baseline row corresponds to `S_T = S₀ = 1.1508` (no change in EUR/USD), representing the case where the exporter's FX view proves exactly correct.
+The sensitivity analysis varies the EUR/USD spot rate at maturity (`S_T`) from **0.95 × S₀** to **1.05 × S₀** in increments of **1% of S₀** (i.e., 0.011508 per step), producing 11 scenarios. The baseline corresponds to `S_T = S₀ = 1.1508` (no change in EUR/USD), representing the case where the exporter's FX view proves exactly correct.
 
-Rows above the baseline represent EUR depreciation — the adverse scenario for a USD-reporting exporter holding EUR receivables. Rows below the baseline represent EUR appreciation — the favorable scenario where unhedged proceeds exceed hedged outcomes.
+Lower `S_T` values below `S0_in` represent EUR depreciation and are adverse for the exporter. Higher `S_T` values above `S0_in` represent EUR appreciation and are favorable.
 
 For each `S_T` scenario, USD proceeds are computed under five strategies: No Hedge, Forward, Money Market, Put Only, and Collar. A "Best Strategy" column identifies the highest-yielding alternative at each rate level.
 
