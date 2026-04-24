@@ -1,7 +1,7 @@
 ## Stage 3 – Technical Specification (4 Points)
 
 **Goal:**
-Using `_templates/template-spec.md`, produce a **2–3 page quantitative specification** that documents your Stage 2 Excel model and articulates a refined, improved version. Your spec should be detailed enough that a treasury analyst—or an AI assistant—could reconstruct and enhance the model from your written description alone.
+Using `folder/template spec.md`, produce a **2–3 page quantitative specification** that documents your Stage 2 Excel model and articulates a refined, improved version. Your spec should be detailed enough that a treasury analyst—or an AI assistant—could reconstruct and enhance the model from your written description alone.
 
 ---
 
